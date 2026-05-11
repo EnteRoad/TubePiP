@@ -29,18 +29,18 @@ jobs:
             -project TubePiP.xcodeproj \
             -scheme TubePiP \
             -configuration Release \
-            -destination "generic/platform=iOS" \
-            -archivePath "$RUNNER_TEMP/TubePiP.xcarchive" \
+            -sdk iphoneos \
+            ONLY_ACTIVE_ARCH=NO \
             CODE_SIGN_IDENTITY="" \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGNING_ALLOWED=NO \
-            archive
+            CONFIGURATION_BUILD_DIR="$RUNNER_TEMP/build" \
+            build
 
       - name: Package IPA
         run: |
           mkdir -p "$RUNNER_TEMP/ipa/Payload"
-          cp -r "$RUNNER_TEMP/TubePiP.xcarchive/Products/Applications/TubePiP.app" \
-            "$RUNNER_TEMP/ipa/Payload/"
+          cp -r "$RUNNER_TEMP/build/TubePiP.app" "$RUNNER_TEMP/ipa/Payload/"
           cd "$RUNNER_TEMP/ipa"
           zip -r "$RUNNER_TEMP/TubePiP.ipa" Payload
 
